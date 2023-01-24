@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/0.8.2/forge.all.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+   <div class="container d-flex justify-content-center mt-100">
+    <div class="row">
+        <div class="col-md-12">
+        
+        <h2>CALCOLA HASH DEL TUO FILE</h2>
+
+<div class="file-drop-area">
+  <span class="file-message">drag and drop files here</span>
+  <input id="holder "class="file-input" type="file" multiple ondrop="ondragFile(event)" ondragend="ondragEnd()" ondragover="ondragOver()">
+</div>
+</div>
+<div class="card">
+  <div id= "hashText" class="card-body">   
+</div>
+</div>
+</div>
+</div>
+
+<div class="container d-flex justify-content-center mt-100">
+  <div class="row">
+      <div class="col-md-12">
+      
+      <h2>VERIFICA HASH DEL TUO FILE</h2>
+
+      <div class="input-group flex-nowrap">
+        <span class="input-group-text" id="addon-wrapping" type="button" onclick="checkHash()">Inserisci Hash per la verifica</span>
+        <input id="checkHash" type="text" class="form-control" placeholder="Hash SHA-256" aria-label="Username" aria-describedby="addon-wrapping" required>
+      </div>
+</div>
+</div>
+ </body>
+</html>
+
+<script>
+var holder = document.getElementById('holder');
+
+function ondragOver() {
+  return false;
+};
+
+function ondragEnd() {
+  return false;
+};
+
+function ondragFile(event) {
+  event.preventDefault();
+
+  var file = event.dataTransfer.files[0];
+  console.log(file);
+  var reader = new FileReader();
+
+  reader.onload = function (event) {
+            event.preventDefault();
+            var binary = event.target.result;
+            var md = forge.md.sha256.create();  
+            md.start();  
+            md.update(binary, "utf8");  
+            var hashText = md.digest().toHex();  
+            document.getElementById("hashText").innerHTML = hashText;
+            document.getElementById("hashText").setAttribute("value", hashText);
+            console.log(hashText);
+  };
+  reader.readAsBinaryString(file);
+}; 
+
+
+function checkHash(){
+  var hashText = document.getElementById("checkHash").value
+  var docHash= document.getElementById("hashText").getAttribute("value");
+  console.log(hashText, docHash);
+  if(docHash == undefined || hashText == undefined){
+    alert("impossibile effettuare confronto, caricare documento");
+    return
+  }else{
+    if(hashText == docHash){
+      alert("I due hash corrispondono")
+      return
+  }
+  alert("i due hash non corrispondono")
+}
+}
+</script>  
+
+
+
+
+
+
+
