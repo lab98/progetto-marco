@@ -104,6 +104,7 @@ function ondragFile(event) {
   reader.onload = function (event) {
             event.preventDefault();
             var binary = event.target.result;
+            console.log(binary);
             var md = forge.md.sha256.create();  
             md.start();  
             md.update(binary, "utf8");  
